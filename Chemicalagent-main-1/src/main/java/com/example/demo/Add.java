@@ -15,7 +15,7 @@ public class Add {
 		return "Add [chemicalname=" + chemicalname + ", quantity=" + quantity + ", availabilitydate=" + availabilitydate
 				+ ", manufacturedate=" + manufacturedate + ", expirydate=" + expirydate + ", price=" + price
 				+ ", createdby=" + createdby + ", timestamp=" + timestamp + ", qntyoptions=" + qntyoptions
-				+ ", sellername=" + sellername + ", companyname=" + companyname + ", userid=" + userid + "]";
+				+ ", sellername=" + sellername + ", companyname=" + companyname + ", id=" + id + "]";
 	}
 	private String chemicalname;
 	  private String quantity;
@@ -30,13 +30,29 @@ public class Add {
 	  private String sellername;
 	  private String companyname;
 	  @Id
+	  private int id;
 	  private int userid;
-	
-	public int getUserid() {
+	  public int getUserid() {
 		return userid;
 	}
 	public void setUserid(int userid) {
 		this.userid = userid;
+	}
+	private String status;
+	  
+	  
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public String getCompanyname() {
 		return companyname;
@@ -117,7 +133,7 @@ public class Add {
 		// TODO Auto-generated constructor stub
 	}
 	public Add(String chemicalname, String quantity, String availabilitydate, String manufacturedate, String expirydate,
-			double price, String createdby, String timestamp,String qntyoptions,int userid) {
+			double price, String createdby, String timestamp,String qntyoptions,int id,String status,int userid) {
 		super();
 		this.chemicalname = chemicalname;
 		this.quantity = quantity;
@@ -129,7 +145,9 @@ public class Add {
 //		this.username = username;
 		this.timestamp = timestamp;
 		this.qntyoptions= qntyoptions;
-		this.userid = userid;
+		this.id = id;
+		this.status = status;
+		this.userid =userid;
 	}
 	
 

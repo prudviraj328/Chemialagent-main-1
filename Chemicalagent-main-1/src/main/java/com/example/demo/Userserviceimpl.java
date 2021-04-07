@@ -29,6 +29,8 @@ public class Userserviceimpl implements Userservice {
 	public Response save(User user) {
 		   Response response = new Response();
 			email = user.getEmail();
+			//String username = user.getUsername();
+			//User user2 = userrep.findByUsername(username);
 			User user1 = userrep.findByEmail(email);
 			if(user1== null) {
 				 MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -97,7 +99,11 @@ public class Userserviceimpl implements Userservice {
 	public User login(User user) {
 		 User temp = new User();
 	        temp = userrep.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-	        
+//	        System.out.println(temp.getUsername());
+//	        System.out.println(temp.getPassword());
+//	        System.out.println(user.getUsername());
+//	        System.out.println(user.getPassword());
+//	        
 	        if (temp.getUsername().equals(user.getUsername()) && temp.getPassword().equals(user.getPassword()) && temp.getIsverified() == "0" ) {
 	        	 user.setIsverified("1");
 				  userrep.save(user);
@@ -147,5 +153,25 @@ public class Userserviceimpl implements Userservice {
 	@Override
 	public List<Add> findBySeller(String sellername) {
 		return addrep.findBySeller(sellername);
+	}
+	@Override
+	public List<Add> findByChemicalname(String chemicalname) {
+		
+		return addrep.findByChemicalname(chemicalname);
+	}
+	@Override
+	public User findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userrep.findByUsername(username);
+	}
+	@Override
+	public int deleteById(int id) {
+		
+		return addrep.deleteById(id);
+	}
+	@Override
+	public int updateById(int id) {
+	
+		return addrep.UpdateById(id);
 	}
 }

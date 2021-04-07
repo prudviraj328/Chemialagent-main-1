@@ -22,5 +22,13 @@ public interface Userservice {
 	
 	public List<Add>findBySeller(String sellername);
 	
+	public List<Add>findByChemicalname(String chemicalname);
+	
+	public User findByUsername(String username);
+	
+	public int deleteById(int id);
+	
+	public int updateById(int id);
+	
 
 }

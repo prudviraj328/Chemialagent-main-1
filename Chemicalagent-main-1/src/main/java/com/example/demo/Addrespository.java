@@ -17,7 +17,7 @@ public class Addrespository {
 	@Autowired
 	 JdbcTemplate jdbc;
 	public int save(Add p){    
-	        String sql="insert into userinfo.add(chemicalname,quantity,availabilitydate,manufacturedate,expirydate,price,createdby,timestamp,sellername,qntyoptions,userid,companyname)values("+"\""+p.getChemicalname()+"\""+","+"\""+p.getQuantity()+"\""+","+"\""+p.getAvailabilitydate()+"\""+","+"\""+p.getManufacturedate()+"\""+","+"\""+p.getExpirydate()+"\""+","+"\""+p.getPrice()+"\""+","+"\""+p.getCreatedby()+"\""+","+"\""+p.getTimestamp()+"\""+","+"\""+p.getSellername()+"\""+","+"\""+p.getQntyoptions()+"\""+","+"\""+p.getUserid()+"\""+","+"\""+p.getCompanyname()+"\""+")";
+	        String sql="insert into userinfo.add(chemicalname,quantity,availabilitydate,manufacturedate,expirydate,price,createdby,timestamp,sellername,qntyoptions,userid,companyname,status)values("+"\""+p.getChemicalname()+"\""+","+"\""+p.getQuantity()+"\""+","+"\""+p.getAvailabilitydate()+"\""+","+"\""+p.getManufacturedate()+"\""+","+"\""+p.getExpirydate()+"\""+","+"\""+p.getPrice()+"\""+","+"\""+p.getCreatedby()+"\""+","+"\""+p.getTimestamp()+"\""+","+"\""+p.getSellername()+"\""+","+"\""+p.getQntyoptions()+"\""+","+"\""+p.getUserid()+"\""+","+"\""+p.getCompanyname()+"\""+","+"\""+p.getStatus()+"\""+")";
 	        return jdbc.update(sql);    
 	    } 
 	
@@ -41,7 +41,7 @@ public class Addrespository {
 	
 	}
 	public List<Add> findAllp(){    
-        return jdbc.query("select * from userinfo.add ",new RowMapper<Add >(){    
+        return jdbc.query("select * from userinfo.add where status ='Available' ",new RowMapper<Add >(){    
             public Add mapRow(ResultSet rs, int row) throws SQLException {    
             	Add  a=new Add();  
             	a.setChemicalname(rs.getString(1));
@@ -68,11 +68,39 @@ public class Addrespository {
 				a.setExpirydate(rs.getString(4));
 				a.setSellername(rs.getString(8));
 				a.setTimestamp(rs.getString(9));
+				a.setStatus(rs.getString(13));
+				a.setId(rs.getInt(14));
 				return a;
                    
             }    	   	
     });
 	
 	}
+	
+	public List<Add> findByChemicalname(String chemicalname){    
+        return jdbc.query("select * from userinfo.add where chemicalname='"+chemicalname+"'",new RowMapper<Add >(){    
+            public Add mapRow(ResultSet rs, int row) throws SQLException {    
+            	Add  a=new Add();  
+            	a.setChemicalname(rs.getString(1));
+				a.setQuantity(rs.getString(2));
+				a.setQntyoptions(rs.getString(10));
+				a.setManufacturedate(rs.getString(3));
+				a.setExpirydate(rs.getString(4));
+				a.setSellername(rs.getString(8));
+				return a;
+                   
+            }    	   	
+    });
+	
+	}
+	public int deleteById(int id){    
+        String sql="delete from userinfo.add where id="+id+"";    
+        return jdbc.update(sql);    
+    }
+
+	public int UpdateById(int id){    
+        String sql="update userinfo.add set status='Available' where id="+id+"";    
+        return jdbc.update(sql);    
+    }
 	
 }

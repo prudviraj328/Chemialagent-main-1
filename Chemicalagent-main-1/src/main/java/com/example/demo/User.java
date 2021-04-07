@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class User {
@@ -14,6 +15,14 @@ public class User {
 	private String city;
 	private String phonenumber;
 	private String companyname;
+	@Lob
+	private String image;
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	@Id
 	private int userid;
 	public int getUserid() {
@@ -88,7 +97,7 @@ public class User {
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
-	public User(String fullname, String email, String address, String city, String phonenumber, String otp,String companyname,int userid) {
+	public User(String fullname, String email, String address, String city, String phonenumber, String otp,String companyname,int userid,String image) {
 		super();
 		this.fullname = fullname;
 		this.email = email;
@@ -98,6 +107,7 @@ public class User {
 		this.otp = otp;
 		this.companyname = companyname;
 		this.userid = userid;
+		this.image = image;
 	}
 	public String getEmail() {
 		return email;
