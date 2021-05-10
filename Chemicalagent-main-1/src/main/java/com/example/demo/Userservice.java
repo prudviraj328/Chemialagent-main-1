@@ -11,9 +11,9 @@ public interface Userservice {
 	
 	public  Response verifyUser(User user);
 	
-	public  User login(User user);
+	public  Response login(User user);
 	
-	public Response save(Add  add);
+	public Response save1(Add  add);
 	
 	public List<User>findAll();
 	
@@ -30,5 +30,13 @@ public interface Userservice {
 	
 	public int updateById(int id);
 	
-
+	public Response forgotpasswordemail(String email);
+	
+	public Response verifyforgot(User user);
+	
+	 public Response newpassword(User user);
+	 
+	 public int UpdateStatusById(int id);
+	
+	 public Response close(User user);
 }

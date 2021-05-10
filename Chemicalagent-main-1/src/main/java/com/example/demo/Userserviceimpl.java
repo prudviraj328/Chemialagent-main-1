@@ -20,6 +20,8 @@ public class Userserviceimpl implements Userservice {
 	  Userrepository userrep;
 	 @Autowired
 	 Addrespository addrep;
+	 @Autowired
+	 Userreposit userrpts;
 	 
 	 String email;
 	 
@@ -88,7 +90,7 @@ public class Userserviceimpl implements Userservice {
 			  System.out.println("verified");
 		  }else {
 			  response.setStatus(201);
-			  userrep.delete(userverify);
+			  //userrep.delete(userverify);
 			  response.setMessage("not verified");
 			  System.out.println("not verified");
 		  }
@@ -96,27 +98,32 @@ public class Userserviceimpl implements Userservice {
 		  
 	}
 	@Override
-	public User login(User user) {
-		 User temp = new User();
-	        temp = userrep.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-//	        System.out.println(temp.getUsername());
-//	        System.out.println(temp.getPassword());
-//	        System.out.println(user.getUsername());
-//	        System.out.println(user.getPassword());
-//	        
-	        if (temp.getUsername().equals(user.getUsername()) && temp.getPassword().equals(user.getPassword()) && temp.getIsverified() == "0" ) {
-	        	 user.setIsverified("1");
-				  userrep.save(user);
-	            return temp;
+	public Response login(User user) {
+		Response  response = new Response();
+		 //User temp = new User();
+		 String temp1 = "1";
+	     User  temp = userrep.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+	     int id = temp.getUserid();
+	        if (temp.getUsername().equals(user.getUsername()) && temp.getPassword().equals(user.getPassword()) && temp.getIsverified().equals(temp1)) {
+	        	 //user.setIsverified("1");
+				  //userrep.save(user);
+	        	response.setStatus(200);
+	        	response.setDatai(id);
+				  response.setMessage("verfied");
+				  System.out.println(" verified");
+	            return response;
 	        }
 	        else{
-	            return temp;
+	        	response.setStatus(201);    
+				  response.setMessage("Bad credentials");
+				  System.out.println("Bad credentials");
+	           return response;
 	        }
-	        
+	        	        
 	        
 	}
 	@Override
-	public Response save(Add add) {
+	public Response save1(Add add) {
 		Response response = new Response();
 		String chemicalname=add.getChemicalname();
 		String quantity=add.getQuantity();
@@ -133,7 +140,7 @@ public class Userserviceimpl implements Userservice {
 			 response.setStatus(200);
 			 response.setMessage("verified");
 			add.setTimestamp(str);
-			addrep.save(add);
+			addrep.save1(add);
 			
 		}
 		else {
@@ -174,4 +181,126 @@ public class Userserviceimpl implements Userservice {
 	
 		return addrep.UpdateById(id);
 	}
+	
+	public int UpdateStatusById(int id) {
+		
+		return addrep.UpdateStatusById(id);
+	}
+	public Response forgotpasswordemail(String email) {
+		   Response response = new Response();
+		   User user = new User();
+//			email = user.getEmail();
+			System.out.println(email);
+			//String username = user.getUsername();
+			//User user2 = userrep.findByUsername(username);
+			User user1 = userrep.findByEmail(email);
+			System.out.println(user1);
+			if(user1!= null) {
+				 MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+				 //String otp = generateOTP();
+				 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+				 try {
+					 String url = "http://chemicalagentmain.s3-website-us-east-1.amazonaws.com/newpassword";
+					mimeMessageHelper.setFrom("prudvi1996@gmail.com");
+					 mimeMessageHelper.setTo(email);
+					 mimeMessageHelper.setSubject("Account Verification");
+					 mimeMessageHelper.setText("User link to reset your password "  + url); 
+//					 user.setIsverified("0");
+					 System.out.println("Method Entered");
+					 System.out.println(user1.getEmail() +" and "+email);
+					 System.out.println(user1.getUsername());
+					 
+					 //user1.setOtp(otp);
+					 System.out.println(user1);
+					 userrpts.save(user1);
+					 
+					 javaMailSender.send(mimeMessage);
+					 response.setStatus(200);
+               response.setMessage("Otp sent Sucessfully");
+               System.out.println("Otp sent Sucessfully");
+					 System.out.println("done");
+				} catch (MessagingException e) {
+				
+					e.printStackTrace();
+				}	
+			}else {
+				 response.setStatus(201);
+           response.setMessage("User Not Exist");
+           System.out.println("User Not Exist");
+			}
+			return response;
+ }
+	public Response verifyforgot(User user) {
+		Response response = new Response();
+		System.out.println(user.getEmail());
+		  User userverify = userrep.findByEmail(user.getEmail());
+		  String pass = userverify.getPassword();
+		  System.out.println(userverify);
+		  String receviedotp = user.getOtp();
+		  String otp2 = userverify.getOtp();
+		  System.out.println(receviedotp);
+		  System.out.println(otp2);
+		  if(receviedotp.equals(otp2) ) {
+			  response.setStatus(200);
+			  userrep.save(userverify);
+			  response.setMessage("Verified");
+			  response.setData(pass);
+			  System.out.println("verified");
+		  }else {
+			  response.setStatus(201);
+			  response.setMessage("not verified");
+			  response.setData("No Data");
+			  System.out.println("not verified");
+		  }
+		  return response;	  
+	}
+    
+    public Response newpassword(User user) {
+		   Response response = new Response();
+//		   User user = new User();
+			email = user.getEmail();
+			System.out.println(email);
+			//String username = user.getUsername();
+			//User user2 = userrep.findByUsername(username);
+			User user1 = userrep.findByEmail(email);
+			System.out.println(user1);
+			if(user1!= null) 
+			{
+
+				System.out.println("Method Entered");
+				String pass = user.getPassword();
+				String cpass = user.getConfirmpassword();
+				user1.setPassword(pass);
+				user1.setConfirmpassword(cpass);
+
+				System.out.println(user1);
+				userrpts.save(user1);
+
+				response.setStatus(200);
+				response.setMessage("Password Updated Successfully");
+				System.out.println("Password Updated Successfully");
+
+			} else {
+				response.setStatus(201);
+				response.setMessage("User Not Exist");
+				System.out.println("User Not Exist");
+			}
+			return response;
+		}
+    public Response close(User user) {
+    	Response  response = new Response();
+    	email = user.getEmail();
+    	User user1 = userrep.findByEmail(email);
+    	if(user1 != null) {
+    		userrep.delete(user1);
+    		response.setStatus(200);
+    		System.out.println("User removed sucessfully");
+    	}
+    	else {
+    		response.setStatus(201);
+    		System.out.println("User not removed sucessfully");
+    	}
+    	return  response;
+    }
+
 }

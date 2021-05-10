@@ -16,7 +16,7 @@ public class Addrespository {
 	
 	@Autowired
 	 JdbcTemplate jdbc;
-	public int save(Add p){    
+	public int save1(Add p){    
 	        String sql="insert into userinfo.add(chemicalname,quantity,availabilitydate,manufacturedate,expirydate,price,createdby,timestamp,sellername,qntyoptions,userid,companyname,status)values("+"\""+p.getChemicalname()+"\""+","+"\""+p.getQuantity()+"\""+","+"\""+p.getAvailabilitydate()+"\""+","+"\""+p.getManufacturedate()+"\""+","+"\""+p.getExpirydate()+"\""+","+"\""+p.getPrice()+"\""+","+"\""+p.getCreatedby()+"\""+","+"\""+p.getTimestamp()+"\""+","+"\""+p.getSellername()+"\""+","+"\""+p.getQntyoptions()+"\""+","+"\""+p.getUserid()+"\""+","+"\""+p.getCompanyname()+"\""+","+"\""+p.getStatus()+"\""+")";
 	        return jdbc.update(sql);    
 	    } 
@@ -94,12 +94,17 @@ public class Addrespository {
 	
 	}
 	public int deleteById(int id){    
-        String sql="delete from userinfo.add where id="+id+"";    
+        String sql="update userinfo.add set status='Sold Out' where id="+id+"";    
         return jdbc.update(sql);    
     }
 
 	public int UpdateById(int id){    
         String sql="update userinfo.add set status='Available' where id="+id+"";    
+        return jdbc.update(sql);    
+    }
+	
+	public int UpdateStatusById(int id){    
+        String sql="update userinfo.add set status='Not Available' where id="+id+"";    
         return jdbc.update(sql);    
     }
 	

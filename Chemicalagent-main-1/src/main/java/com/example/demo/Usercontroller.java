@@ -18,7 +18,7 @@ public class Usercontroller {
 	
 	@Autowired
     Userservice usersev;
-
+	 
 	
 	
 	@GetMapping("/")
@@ -36,13 +36,13 @@ public class Usercontroller {
 	return usersev.verifyUser(user);
    }
   @PostMapping("/login")
-	public  User loginUser(@RequestBody User user) {
+	public  Response loginUser(@RequestBody User user) {
 		 return usersev.login(user) ;
 	}
   
   @PostMapping("/entry")
   public  Response saveAdd(@RequestBody Add add) {
-		 return usersev.save(add);
+		 return usersev.save1(add);
 	}
   @GetMapping("/show")
   public  List<Add> findlistp() {
@@ -58,7 +58,6 @@ public class Usercontroller {
 	}
   @GetMapping("/show3/{username}")
   public  User findByUsername(@PathVariable String username) {
-//	  System.out.println(username);
 		return usersev.findByUsername(username);
 	}
   @DeleteMapping("/delete/{id}")
@@ -71,5 +70,29 @@ public class Usercontroller {
 	return usersev.updateById(id);
 	 
  }
+ @PutMapping("/forgot_password_email/{email}")
+	public  Response FPemail(@PathVariable String email) {
+		System.out.println("Post method is entered");
+		 return usersev.forgotpasswordemail(email) ;
+}
+ @PostMapping("/verifyforgot")
+ public  Response verifyforgot(@RequestBody User user) {
+	return usersev.verifyforgot(user);
+}
+	
+	@PostMapping("/newpassword")
+	public  Response newpassword(@RequestBody User user) {
+		System.out.println("Post method is entered");
+		 return usersev.newpassword(user) ;
+}
+	@PutMapping("/updateStatus/{id}")
+	  public int UpdateStatusById(@PathVariable int id) {
+		  return usersev.UpdateStatusById(id); 
+	  }
+	@PostMapping("/close")
+	public Response close(@RequestBody User user) {
+		System.out.println(user.getEmail());
+		return usersev.close(user);
+	}
 
 }
