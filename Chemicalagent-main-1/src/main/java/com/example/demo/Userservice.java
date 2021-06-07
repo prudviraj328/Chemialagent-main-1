@@ -39,4 +39,8 @@ public interface Userservice {
 	 public int UpdateStatusById(int id);
 	
 	 public Response close(User user);
+	 
+	 public Response updatepro(User user);
+	 
+	 public  Response save2(Contactus contactus);
 }

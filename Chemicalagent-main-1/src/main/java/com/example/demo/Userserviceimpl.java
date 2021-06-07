@@ -22,6 +22,8 @@ public class Userserviceimpl implements Userservice {
 	 Addrespository addrep;
 	 @Autowired
 	 Userreposit userrpts;
+	 @Autowired
+	 Contactusrepository conrep;
 	 
 	 String email;
 	 
@@ -35,6 +37,9 @@ public class Userserviceimpl implements Userservice {
 			//User user2 = userrep.findByUsername(username);
 			User user1 = userrep.findByEmail(email);
 			if(user1== null) {
+				String username = user.getUsername();
+				User user2 = userrep.findByUsername(username);
+				if(user2 == null) {
 				 MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 				 String otp = generateOTP();
 				 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
@@ -54,7 +59,13 @@ public class Userserviceimpl implements Userservice {
 				} catch (MessagingException e) {
 				
 					e.printStackTrace();
-				}	
+				}
+				 
+				}else {
+					response.setStatus(202);
+	                 response.setMessage("Username already exist");
+	                 System.out.println("Username already exist");
+				}
 			}else {
 				 response.setStatus(201);
                  response.setMessage("User already exist");
@@ -302,5 +313,27 @@ public class Userserviceimpl implements Userservice {
     	}
     	return  response;
     }
+    @Override
+	public Response updatepro(User user) {
+		Response  response = new Response();
+		  User user1 = userrep.findByEmail(user.getEmail());
+		  user1.setImage(user.getImage());
+		  user1.setFullname(user.getFullname());
+		  user1.setPhonenumber(user.getPhonenumber());
+	    userrep.save(user1);
+	    response.setStatus(200);
+	    response.setMessage("Updated Successfully");
+	    return response;
+		
+	}
+	@Override
+	public Response save2(Contactus contactus) {
+		Response  response = new Response();
+	 conrep.save(contactus);
+	 response.setStatus(200);
+	 response.setMessage("Updated Successfully");
+		return response ;
+		
+	}
 
 }

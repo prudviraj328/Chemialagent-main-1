@@ -94,5 +94,15 @@ public class Usercontroller {
 		System.out.println(user.getEmail());
 		return usersev.close(user);
 	}
+	@PutMapping("/updateprofile")
+	 public Response updatepro(@RequestBody User user) {	
+		 System.out.println("enter");
+		return usersev.updatepro(user);
+		 
+	 }
+	@PostMapping("/contactus")
+	public Response contactus(@RequestBody Contactus contactus) {
+		return usersev.save2(contactus);
+	}
 
 }

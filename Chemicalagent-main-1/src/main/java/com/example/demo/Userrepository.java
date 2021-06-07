@@ -10,6 +10,4 @@ import org.springframework.stereotype.Repository;
 	 User findByEmail(String Email);
 	 User findByUsernameAndPassword(String UserName, String Password);
 	 User findByUsername(String username);
-	 
-	 
 	}
